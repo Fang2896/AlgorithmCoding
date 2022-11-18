@@ -83,3 +83,18 @@
     ```
 
     
+
+
+
+## 链表
+
+链表写法：
+```c++
+// 单链表
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) ： val(x),next(NULL) { }	// 构造函数
+};
+```
+
