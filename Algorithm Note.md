@@ -98,3 +98,48 @@ struct ListNode {
 };
 ```
 
+* 206：Reverse-Linked-List
+
+  * 有3种主流写法：
+
+    1. 双指针法，记得用temp暂存下一个结点
+
+    2. 从前往后递归法：
+       ```c++
+       class Solution {
+       public:
+           ListNode* reverse(ListNode* pre, ListNode* cur) {
+               if(cur == nullptr) return pre;
+               ListNode* temp = cur->next;
+               cur->next = pre;
+               return reverse(cur, temp)
+           }
+           ListNode* reverseList(ListNode* head) {
+               return reverse(nullptr, head);
+           }
+       }
+       ```
+
+       这种的思路是loop-invariant，循环不变量思想，假设前面的链表已经翻转完成，我们继续向后翻转。这种思路考虑的是，交界处的翻转处理，pre相当于翻转完成的链表的头！因为我们的return判断条件是`cur==nullptr`！
+
+    3. 从后往前递归法
+       ```c++
+       class Solution {
+       public:
+           
+           ListNode* reverseList(ListNode* head) {
+               if(head==nullptr) return nullptr;
+               if(head->next==nullptr) return head;
+               // 介于假设，我们直接将head->next后面的链表全部翻转
+               ListNode* last = reverseList(head->next);
+               // 现在只剩一个没有翻转的了
+               head->next->next = head;
+               head->next = nullptr;
+               // 现在所有结点都转换完成，直接返回即可
+               return last;	
+           }
+       }
+       ```
+
+       不需要辅助函数，我们直接假设这个函数，可以成功实现head后的链表翻转功能！记住：递归开头一定是写边界条件！该题有2个，一是head本身就空，一个是head已经到了边界，其next为空。
+       这种思想相当于，**数学归纳法！**
