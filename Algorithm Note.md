@@ -143,3 +143,114 @@ struct ListNode {
 
        不需要辅助函数，我们直接假设这个函数，可以成功实现head后的链表翻转功能！记住：递归开头一定是写边界条件！该题有2个，一是head本身就空，一个是head已经到了边界，其next为空。
        这种思想相当于，**数学归纳法！**
+
+## 哈希表
+
+* 49：Group-Anagrams
+
+  * 方法一：用排序后的string作为key：
+    注意：
+    要跳出用c来编程的思想，熟练运用容器！
+    比如这题就要果断用sort函数，unordered_map容器，以及对应的emplace_back方法，因为这个方法比push_back要快！
+
+  * **方法二：**本题很值得反复琢磨！
+
+    * 参考链接：
+
+      [(179条消息) 面试题 10.02：变位词组(自定义哈希函数)_菊头蝙蝠的博客-CSDN博客](https://blog.csdn.net/qq_21539375/article/details/122003817#:~:text=其中 [fn %3D hash {}] 是初始化捕获列表%2C也就是说定义了一个,auto fn %3D hash {}%3B 供后续使用)
+
+    * lambda函数写法：
+      ```c++
+      auto arrayHash = [ fn = hash<int>{} ] (const array<int, 26> &arr) 
+          -> size_t {
+          	return accumulate(arr.begin(). arr.end(), 0u, 
+      					[&](size_t acc, int num) {
+                          	return (acc<<1)^fn(num);
+      					}
+                  	);
+      	};
+      unordered_map<array<int, 26>, vector<string>, decltype(arrayHash)> 
+          mp(0, arrayHash);
+      ```
+
+    * 仿函数的写法：
+      class实现，类函数
+
+      ```c++
+      class arrayHash {
+      public:
+          size_t operator()(const array<int, 26> &arr) const {
+              hash<int> fn;
+              return accumulate(arr.begin(), arr.end(), 0u, 
+                                [&](size_t acc, int num) {
+                                    return (acc<<1)^fn(num);
+                                }
+      					);
+          }
+      };
+      unordered_map<array<int,26>,vector<string>,arrayHash> map(0,arrayHash());
+      //arrayHash是一个类,arrayHash()是一个函数名(仿函数)
+      ```
+
+      * 注：这里的`[&](size_t acc, int num)` 中的[&]的含义是：
+        **隐式引用捕获**，注意，若将变量名写入捕获列表，则为显示捕获！
+
+    * struct的写法：
+      ```c++
+      struct arrayHash{
+                  size_t operator()(const array<int,26>& arr) const{
+                      hash<int> fn;
+                      return accumulate(arr.begin(),arr.end(),0u,[&](size_t acc,int num){
+                          return (acc<<1)^fn(num);
+                      });
+                  }
+              };
+      unordered_map<array<int,26>,vector<string>,arrayHash> map;
+      ```
+
+    * 静态函数的写法：
+      ```c++
+      static size_t arrayHash(const array<int,26>& arr){
+              return accumulate(arr.begin(),arr.end(),0u,[&,fn=hash<int>{}](size_t acc,int num){
+                          return (acc<<1)^fn(num);
+                      });
+          }
+      unordered_map<array<int,26>,vector<string>,decltype(&arrayHash)> map(0,arrayHash);
+      ```
+
+      
+
+* 349：Intersection-of-two-Arrays
+  这题很简单，但是我们需要学习的是C++中容器的用法
+
+  * 选择最优容器：
+    题目说了答案不许重复，我们直接考虑set
+    又因为题目用哈希表方便，故选择unordered_set
+  * 用了容器就要用c++给定的容器操作！
+    * 初始化：
+      `unordered_set<int> nums_set(nums1.begin(), nums1.end());`
+      用范围迭代器初始化更方便，不要自己写一个for循环，那是c的思想！
+    * for循环：用c++新定义的冒号循环！
+      `for(int num : nums) {}`
+    * 插入：
+      注意用`insert`！或者`emplace`！
+
+  * 用set的缺点：
+    占用空间大，速度慢！
+
+  * 注意题目的限制
+
+    * `1 <= nums1.length, nums2.length <= 1000`
+    * `0 <= nums1[i], nums2[i] <= 1000`
+
+    所以我们可以用数组来做哈希表！
+
+* 202: Happy_number
+  * 自己的ac记录
+    * 第一次，while的逻辑搞错了
+    * 第二次，结束的判断条件搞错了
+    * 第三次决定用unordered_set!
+    * 最后的结果ac：
+      - Your runtime beats 6.3 % of cpp submissions
+      - Your memory usage beats 5 % of cpp submissions (6.8 MB)
+  * 
