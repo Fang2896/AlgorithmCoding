@@ -253,4 +253,74 @@ struct ListNode {
     * 最后的结果ac：
       - Your runtime beats 6.3 % of cpp submissions
       - Your memory usage beats 5 % of cpp submissions (6.8 MB)
-  * 
+  * 启示录上的优化
+    就是把俩函数改为一个就行了
+
+* K-sum问题
+
+  * 题目汇总：2-sum，3-sum，4-sum，4-sum II
+
+  * 其中4-sum II只需要返回个数，更简单，直接用哈希表存对应数字即可！
+
+  * 其他几个sum，都是可以用哈希表
+    其中2-sum直接哈希，3-sum可以哈希，但是去重比较麻烦，可以考虑双指针法，去重更加简单！
+    但是都需要先排序！
+
+  * 去重的逻辑：
+
+    * a 如果重复了怎么办，a是nums里遍历的元素，那么应该直接跳过去。
+
+      但这里有一个问题，是判断 nums[i] 与 nums[i + 1]是否相同，还是判断 nums[i] 与 nums[i-1] 是否相同。都是和 nums[i]进行比较，是比较它的前一个，还是比较他的后一个。
+
+      如果我们的写法是 这样：
+
+      ```c++
+      if (nums[i] == nums[i + 1]) { // 去重操作
+          continue;
+      }
+      ```
+
+      那就我们就把 三元组中出现重复元素的情况直接pass掉了。 例如{-1, -1 ,2} 这组数据，当遍历到第一个-1 的时候，判断 下一个也是-1，那这组数据就pass了。
+
+      **我们要做的是 不能有重复的三元组，但三元组内的元素是可以重复的！**
+
+      那么应该这么写：
+
+      ```c++
+      if (i > 0 && nums[i] == nums[i - 1]) {
+          continue;
+      }
+      ```
+
+    * b与c的去重
+
+    * 很多同学写本题的时候，去重的逻辑多加了 对right 和left 的去重：（代码中注释部分）
+
+      ```c++
+      while (right > left) {
+          if (nums[i] + nums[left] + nums[right] > 0) {
+              right--;
+              // 去重 right
+              while (left < right && nums[right] == nums[right + 1]) right--;
+          } else if (nums[i] + nums[left] + nums[right] < 0) {
+              left++;
+              // 去重 left
+              while (left < right && nums[left] == nums[left - 1]) left++;
+          } else {
+          }
+      }
+      ```
+
+      但细想一下，这种去重其实对提升程序运行效率是没有帮助的。
+
+      拿right去重为例，即使不加这个去重逻辑，依然根据 `while (right > left)` 和 `if (nums[i] + nums[left] + nums[right] > 0)` 去完成right-- 的操作。
+
+      多加了 `while (left < right && nums[right] == nums[right + 1]) right--;` 这一行代码，其实就是把 需要执行的逻辑提前执行了，但并没有减少 判断的逻辑。
+
+      最直白的思考过程，就是right还是一个数一个数的减下去的，所以在哪里减的都是一样的。
+
+      所以这种去重 是可以不加的。 仅仅是 把去重的逻辑提前了而已
+
+  * 为什么不建议2sum用双指针
+    因为两数之和要求返回的是索引下标， 而双指针法一定要排序，一旦排序之后原数组的索引就被改变了。
+  * 如果两数之和要求返回的是数值的话，就可以使用双指针法了。
