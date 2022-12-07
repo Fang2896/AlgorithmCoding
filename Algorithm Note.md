@@ -346,3 +346,56 @@ struct ListNode {
 
       
 
+* 151：Reverse-Words-in-a-String
+
+  * 快慢指针的思想：
+    ```c++
+     // 用快指针掠过空格，用慢指针记录 
+            for( ; fastIndex < s.size(); fastIndex++) {
+                if(fastIndex - 1 > 0
+                        && s[fastIndex - 1] == s[fastIndex]
+                        && s[fastIndex] == ' ') {
+                    continue;
+                } else 
+                    s[slowIndex++] = s[fastIndex];
+            }
+    ```
+
+    * 用移除元素的思想，能使得代码更简洁
+      ```c++
+      void removeExtraSpaces(string& s) {
+              int slow = 0;
+              for(int i = 0; i < s.size(); ++i) {
+                  if(s[i] != ' ') {
+                      if(slow != 0)   // 第一个单词前不应该有空格
+                          s[slow++] = ' ';
+                      while(i < s.size() && s[i] != ' ')
+                          s[slow++] = s[i++];
+                  }
+              }
+              s.resize(slow);
+          }
+      ```
+
+      
+
+  * 记得要考虑**头尾的空格**！
+
+* 剑指offer 58： 左旋字符串
+  * **局部翻转再全局翻转的思想！**
+
+* 28： KMP字符串匹配
+
+  * KMP
+
+    * 前缀表：
+      **前缀表是用来回退的，它记录了模式串与主串(文本串)不匹配的时候，模式串应该从哪里开始重新匹配。记录下标i之前（包括i）的字符串中，有多大长度的相同前缀后缀。**
+
+      next数组其实就是自动机！如何构建自动机？
+      所以前缀表具有告诉我们当前位置匹配失败，跳到之前已经匹配过的地方的能力。
+
+      * 比如：
+        aabaaf
+        010120
+
+      next数组就可以是前缀表，但是很多实现都是把前缀表统一减一（右移一位，初始位置为-1）之后作为next数组。
