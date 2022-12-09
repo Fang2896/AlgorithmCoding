@@ -417,6 +417,48 @@ struct ListNode {
       }  
       ```
     
-      
   * BM算法
   * Sunday算法
+
+## 栈与队列
+
+* 347：
+
+  * 注意事项：
+
+    1. priority_queue的使用
+       注意unorder_map中，迭代器指向的是pair！
+
+    2. 排序和建堆的效果
+
+       * 排序：
+         less<T>变成升序（从左到右遍历下标时，数组元素是从小到大）
+         greater<T>变成降序（从左到右遍历下标时，数组元素是从大到小）
+       * 建堆：
+         less<T>变成大顶堆（从上层到下层，堆元素是从大到小，同层之间随便）
+         greater<T>变成小顶堆（从上层到下层，堆元素是从小到大，同层之间随便）
+
+       可以看到排序和建队时，less和greater并不是直接对应汉语意思，不能统一。其实是真正的意思是两个要比较的元素，第一个元素是否比第二个元素更小less还是更大greater。
+
+       * 解释：
+         顶堆插入一个新元素时，就是插入到最后一个叶子
+       * 然后这时候整理堆内元素让堆重新满足大小顶堆。关键**让新插入的结点和它的父结点进行比较，`comp(新插入，它的父结点)`**。
+         大顶堆就是让父比子大，即符合`less`让新插入的比父结点更小；
+         小顶堆就是父比子小，即符合`greater`让新插入的比父结点更大。
+
+    3. pair的第二个元素比较：
+       必须用自己构造一个比较函数！或者仿函数
+
+       ```c++
+       class MyComparison {
+       public:
+               // 设计最大堆
+               bool operator() (const pair<int, int>& lhs, const pair<int, int>& rhs) {
+                   return lhs.second > rhs.second;
+               }
+       };
+       // 定义以pair为基础的优先队列
+        priority_queue<pair<int, int>, vector<pair<int, int>>, MyComparison> pri_que;
+       ```
+
+       
