@@ -461,4 +461,16 @@ struct ListNode {
         priority_queue<pair<int, int>, vector<pair<int, int>>, MyComparison> pri_que;
        ```
 
-       
+       为什么一定要写仿函数？因为如果单纯写函数指针的话，只能对仅有一个参数的函数有用，但是如果有多个参数就不适用了（万一参数发生改变无法兼容！）。
+
+## 二叉树
+
+```c++
+struct TreeNode {
+	int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+```
+
