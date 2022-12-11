@@ -3,13 +3,13 @@
  * @Description  : 
  * @Version      : 0.0
  * @Author       : M1kanN
- * @Date         : 2022-12-10 22:41:52
- * @LastEditTime : 2022-12-11 14:28:52
+ * @Date         : 2022-12-10 22:35:55
+ * @LastEditTime : 2022-12-11 15:28:15
  ****************************************************************/
 /*
- * @lc app=leetcode.cn id=94 lang=cpp
+ * @lc app=leetcode.cn id=145 lang=cpp
  *
- * [94] Binary Tree Inorder Traversal
+ * [145] Binary Tree Postorder Traversal
  */
 
 // @lc code=start
@@ -26,22 +26,28 @@
  */
 class Solution {
 public:
-    vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> postorderTraversal(TreeNode* root) {
         vector<int> result;
-        TreeNode* cur = root;
         stack<TreeNode*> st;
-        while(cur != nullptr || !st.empty()) {
-            if(cur != nullptr) {
-                st.push(cur);
-                cur = cur->left;
+        if(root != nullptr)
+            st.push(root);
+        while(!st.empty()) {
+            TreeNode* node = st.top();
+            if(node != nullptr) {
+                st.push(nullptr);   
+                if(node->right)
+                    st.push(node->right);
+                if(node->left)
+                    st.push(node->left);
             } else {
-                cur = st.top();
                 st.pop();
-                result.push_back(cur->val);
-                cur = cur->right;
+                node = st.top();
+                st.pop();
+                result.push_back(node->val);
             }
         }
         return result;
-    }
+    } 
 };
 // @lc code=end
+
