@@ -13,6 +13,6 @@
         "map": "cpp",
         "iostream": "cpp"
     },
-    "C_Cpp.errorSquiggles": "Disabled",
+    "C_Cpp.errorSquiggles": "disabled",
     
 }

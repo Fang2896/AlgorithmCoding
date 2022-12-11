@@ -4,7 +4,7 @@
  * @Version      : 0.1
  * @Author       : M1kanN
  * @Date         : 2022-12-10 19:59:33
- * @LastEditTime : 2022-12-10 20:27:57
+ * @LastEditTime : 2022-12-11 20:30:53
  ****************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +15,7 @@ void Exchange(int array[], int i, int j) {
     array[i] = array[j];
     array[j] = temp;
 }
+
 
 /*********************冒泡排序函数****************************/ 
 void BubbleSort(int array[], int length) {
