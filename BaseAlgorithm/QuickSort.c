@@ -4,7 +4,7 @@
  * @Version      : 0.0
  * @Author       : M1kanN
  * @Date         : 2022-12-30 13:05:35
- * @LastEditTime : 2022-12-30 14:40:43
+ * @LastEditTime : 2023-01-07 14:20:14
  ****************************************************************/
 #include<stdio.h>
 #include <stdlib.h>
@@ -67,7 +67,7 @@ int main() {
     printf("Please Write your Array's elements: \n");
     for(int i = 0; i < N; i++)
         scanf("%d", &MyArray[i]);
-    printf("After Bubble Sorting, your Array is :  \n");
+    printf("After Quick Sorting, your Array is :  \n");
 
     QuickSort(MyArray, 0, N - 1);
 
