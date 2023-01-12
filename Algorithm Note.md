@@ -465,54 +465,10 @@ struct ListNode {
 
 ## 二叉树
 
-```c++
-struct TreeNode {
-	int val;
-    TreeNode* left;
-    TreeNode* right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-```
+* Week 1：
+  总体来说就是熟悉3种递归、迭代、统一的树遍历方法
+  还有如何判断树的翻转（每个结点翻转）、对称、相等、子树这种方法。
+  * 判断树的子树这种方法除了暴力遍历，还能用KMP和树哈希的方法来做，这里mark下，以后来再做一做。
 
-* 222：Count Complete Binary Tree
-
-  * 普通二叉树方法（不仅仅是完全，普通二叉树也能用的方法）：
-
-    * 普通递归
-    * 迭代
-
-    时间复杂度：O(N)
-    空间复杂度：O(logN)
-
-  * 利用 完全二叉树方法：
-    可以将复杂度下降到O(logN\*logN) 空间是O(logN)
-
-    ```c++
-    class Solution {
-    public:
-        int countNodes(TreeNode* root) {
-            if (root == nullptr) return 0;
-            TreeNode* left = root->left;
-            TreeNode* right = root->right;
-            int leftDepth = 0, rightDepth = 0; // 这里初始为0是有目的的，为了下面求指数方便
-            while (left) {  // 求左子树深度
-                left = left->left;
-                leftDepth++;
-            }
-            while (right) { // 求右子树深度
-                right = right->right;
-                rightDepth++;
-            }
-            if (leftDepth == rightDepth) {
-                return (2 << leftDepth) - 1; // 注意(2<<1) 相当于2^2，所以leftDepth初始为0
-            }
-            return countNodes(root->left) + countNodes(root->right) + 1;
-        }
-    };
-    ```
-
-  * **前序求的是深度，后序求的是高度。**
-  
-    * 二叉树节点的深度：指从根节点到该节点的最长简单路径边的条数或者节点数（取决于深度从0开始还是从1开始）
-    * 二叉树节点的高度：指从该节点到叶子节点的最长简单路径边的条数后者节点数（取决于高度从0开始还是从1开始）
+* Week2:
   
